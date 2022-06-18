@@ -44,6 +44,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
      * // userDetails.getUsername()
      * // userDetails.getPassword()
      * // userDetails.getAuthorities()
+     *
+     * Note :
+     * JWT Utility class = JwtUtils.java
+     * This class has 3 main functions:
+     *
+     * getJwtFromCookies: get JWT from Cookies by Cookie name
+     * generateJwtCookie: generate a Cookie containing JWT from username, date, expiration, secret
+     * getCleanJwtCookie: return Cookie with null value (used for clean Cookie)
+     * getUserNameFromJwtToken: get username from JWT
+     * validateJwtToken: validate a JWT with a secret
+     *
      * @param request
      * @param response
      * @param filterChain
@@ -58,7 +69,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         try {
             String jwt = parseJwt(request);
             if(jwt != null && jwtUtils.validateJwtToken(jwt)){
-                String username = jwtUtils.getUsreNameFromJwtToken(jwt);
+                String username = jwtUtils.getUserNameFromJwtToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails,
