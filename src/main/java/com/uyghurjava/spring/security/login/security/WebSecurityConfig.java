@@ -1,5 +1,6 @@
 package com.uyghurjava.spring.security.login.security;
 
+import com.uyghurjava.spring.security.login.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
