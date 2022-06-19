@@ -40,6 +40,7 @@ public class JwtUtils {
     @Value("${uyghurcoder.app.jwtCookieName}")
     private String jwtCookie;
 
+    //getJwtFromCookies: get JWT from Cookies by Cookie name
     public String getJwtFromCookies(HttpServletRequest request){
         Cookie cookie = WebUtils.getCookie(request, jwtCookie);
         if(cookie != null){
@@ -48,22 +49,24 @@ public class JwtUtils {
             return null;
         }
     }
+    //generateJwtCookie: generate a Cookie containing JWT from username, date, expiration, secret
     public ResponseCookie generateJwtCookie(UserDetailsImpl userPrincipal){
         String jwt = generateTokenFromUsername(userPrincipal.getUsername());
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt)
                 .path("/api").maxAge( 24 * 60 * 60 ).httpOnly(true).build();
+
         return cookie;
     }
-
+    //getCleanJwtCookie: return Cookie with null value (used for clean Cookie)
     public ResponseCookie getCleanJwtCookie(){
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
         return cookie;
     }
-
+    //getUserNameFromJwtToken: get username from JWT
     public String getUserNameFromJwtToken(String token){
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
-
+    //validateJwtToken: validate a JWT with a secret
     public boolean validateJwtToken(String authToken){
         try{
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
@@ -82,6 +85,7 @@ public class JwtUtils {
         return false;
     }
 
+    // generate a JWT from username, date, expiration, secret
     public String generateTokenFromUsername(String username){
         return Jwts.builder()
                 .setSubject(username)

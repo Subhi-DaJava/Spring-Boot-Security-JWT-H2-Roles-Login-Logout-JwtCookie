@@ -1,19 +1,79 @@
 {
 	"info": {
 		"_postman_id": "b99e9f60-6876-4bbe-abb3-af56b43f8cf7",
-		"name": "spring-boot-security-login-jwt",
+		"name": "spring-boot-security-login-jwt-original",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "20073289"
 	},
 	"item": [
 		{
-			"name": "save un User",
+			"name": "Sing Up with Role Empty",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"userUyghur\",\r\n    \"email\": \"user@uyghurjava.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": [\"user\"]\r\n}",
+					"raw": "{\r\n    \"username\": \"userNewUyghur\",\r\n    \"email\": \"userNew@uyghurjava.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": [\"user\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sing Up with Role(s)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"userNewUyghur_9\",\r\n    \"email\": \"userNew_9@uyghurjava.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": [\"admin\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sing Up with Role Null",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"userNewUyghur_8\",\r\n    \"email\": \"userNew_8@uyghurjava.com\",\r\n    \"password\": \"12345678\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -190,7 +250,7 @@
 			"response": []
 		},
 		{
-			"name": "Access ROLE_USER resource: api/test/user",
+			"name": "Show all Users",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -200,6 +260,40 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"username\": \"userUyghur\",\r\n    \"email\": \"user@uyghurjava.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": [\"user\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/test/admin/allUsers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"test",
+						"admin",
+						"allUsers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Access ROLE_USER resource: api/test/user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -232,7 +326,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"userUyghur\",\r\n    \"email\": \"user@uyghurjava.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": [\"user\"]\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -265,7 +359,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"userUyghur\",\r\n    \"email\": \"user@uyghurjava.com\",\r\n    \"password\": \"12345678\",\r\n    \"role\": [\"user\"]\r\n}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"

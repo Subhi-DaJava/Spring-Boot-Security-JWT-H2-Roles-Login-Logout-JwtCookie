@@ -67,22 +67,40 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
+            //get JWT from the HTTP Cookies
             String jwt = parseJwt(request);
+            //if the request has JWT, validate it, parse username from it
             if(jwt != null && jwtUtils.validateJwtToken(jwt)){
+               //parse username from it
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
+                //from username, get UserDetails to create an Authentication object
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails,
                                 null,
                                 userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                //set the current UserDetails in SecurityContext using setAuthentication(authentication) method.
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                /*
+                After this, everytime you want to get UserDetails, just use SecurityContext like this:
+                UserDetails userDetails =
+	            (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                // userDetails.getUsername()
+                // userDetails.getPassword()
+                // userDetails.getAuthorities()
+                 */
             }
         } catch (Exception e){
             logger.error("Cannot set user authentication: {}", e);
         }
+
         filterChain.doFilter(request, response);
     }
+
+    //get JWT from the HTTP Cookies
     private String parseJwt(HttpServletRequest request){
         String jwt = jwtUtils.getJwtFromCookies(request);
         return jwt;

@@ -15,19 +15,29 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * AuthEntryPointJwt class that implements AuthenticationEntryPoint interface.
+ * Then we override the commence() method.
+ * This method will be triggered anytime unauthenticated User requests a secured HTTP resource
+ * and an AuthenticationException is thrown.
+ */
+
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
         logger.error("Unauthorized error: {}", authException.getMessage());
+
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         final Map<String, Object> body = new HashMap<>();
-
+        //HttpServletResponse.SC_UNAUTHORIZED is the 401 Status code.
+        // It indicates that the request requires HTTP authentication.
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
         body.put("error", "Unauthorized");
         body.put("message", authException.getMessage());

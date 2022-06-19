@@ -23,6 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
     /***
      * In the code above, we get full custom User object using UserRepository,
-     * then we build a UserDetails object using static build() method.
+     * then we build a UserDetails object using static build() method -> public static UserDetailsImpl build(User user)
      */
 }

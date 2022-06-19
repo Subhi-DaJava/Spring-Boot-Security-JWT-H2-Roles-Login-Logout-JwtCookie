@@ -68,37 +68,52 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
+        //authenticate { username, password }
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        //update SecurityContext using Authentication object
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        //get UserDetails from Authentication object
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        //generate JWT cookie
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
+        logger.info("Successfully Sign-in (AuthController)");
+
+        //response contains JWT and UserDetails data
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                 .body(new UserInfoResponse(userDetails.getId(),
                         userDetails.getUsername(),
                         userDetails.getEmail(),
                         roles));
+
     }
+
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest){
+        //check existing username/email
         if(userRepository.existsByUsername(signupRequest.getUsername())){
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
         if (userRepository.existsByEmail(signupRequest.getEmail())){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error Email is already in use !"));
+            return ResponseEntity.badRequest().body(new MessageResponse("Error Email is already in use!"));
         }
-        //Create new user's account
+        //Create new user's account(with ROLE_USER if not specifying role)
         User user = new User(signupRequest.getUsername(),
                 signupRequest.getEmail(),
                 encoder.encode(signupRequest.getPassword()));
+
         Set<String> strRoles = signupRequest.getRole();
+
         Set<Role> roles = new HashSet<>();
-        if(strRoles == null){
+        //(with ROLE_USER if not specifying role)
+        if(strRoles == null || strRoles.isEmpty()){
             Role userRole = roleRepository.findByName(ERole.ROLE_USER)
                     .orElseThrow( () -> new RuntimeException("Error: Role is not found"));
             roles.add(userRole);
@@ -129,7 +144,9 @@ public class AuthController {
 
     @PostMapping("/signout")
     public ResponseEntity<?> logoutUser(){
+        //clear the Cookie
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(new MessageResponse("You have been signed out!"));
     }

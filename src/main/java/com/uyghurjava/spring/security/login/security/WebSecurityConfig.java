@@ -39,14 +39,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *  which Exception Handler is chosen (AuthEntryPointJwt).
      */
 
+    /**
+     * spring.h2.console.path=/h2-ui is for H2 console’s url,
+     * so the default url http://localhost:8080/h2-console will change to http://localhost:8080/h2-ui.
+     */
     @Value("${spring.h2.console.path}")
     private String h2ConsolePath;
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+
+    /**
+     * AuthenticationEntryPoint will catch authentication error.
+     * AuthEntryPointJwt implements AuthenticationEntryPoint
+     */
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
+    /**
+     * AuthTokenFilter extends OncePerRequestFilter,
+     * OncePerRequestFilter makes a single execution for each request to our API.
+     * It provides a doFilterInternal() method that we will implement parsing & validating JWT,
+     * loading User details (using UserDetailsService), checking Authorization (using UsernamePasswordAuthenticationToken).
+     * @return
+     */
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter(){
         return new AuthTokenFilter();
@@ -65,6 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception{
@@ -80,6 +97,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * We override the method configure(HttpSecurity http) method from WebSecurityConfigurerAdapter interface.
+     * It tells Spring Security how we configure CORS and CSRF, when we want to require all users to be authenticated or not,
+     * which filter (AuthTokenFilter) and when we want it to work (filter before UsernamePasswordAuthenticationFilter),
+     * which Exception Handler is chosen (AuthEntryPointJwt).
+     * @param http
+     * @throws Exception
+     */
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
@@ -92,6 +119,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // fix H2 database console: Refused to display ' in a frame because it set 'X-Frame-Options' to 'deny'
         http.headers().frameOptions().sameOrigin();
+
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
