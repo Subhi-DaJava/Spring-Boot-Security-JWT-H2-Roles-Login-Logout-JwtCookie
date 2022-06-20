@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.uyghurjava</groupId>
-    <artifactId>spirng-boot-security-login-jwt</artifactId>
+    <artifactId>spirng-boot-security-auth-jwt-h2</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-boot-security-login-jwt</name>
     <description>spring-boot-security-login-jwt</description>
