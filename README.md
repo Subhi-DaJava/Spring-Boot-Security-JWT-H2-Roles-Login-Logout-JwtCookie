@@ -13,17 +13,17 @@
 #### By User’s role (admin, moderator, user), we authorize the User to access resources.
 
 ### APIs : 
-![img.png](img.png)
+![img.png](src/main/resources/DataFile/img.png)
 
 ### Flow of Spring Boot Security Login example:
-![img_2.png](img_2.png)
+![img_2.png](src/main/resources/DataFile/img_2.png)
 
 ### Note* : A legal JWT will be stored in "HttpOnly Cookie" if Client accesses protected resources.
-![img_3.png](img_3.png)
+![img_3.png](src/main/resources/DataFile/img_3.png)
 #### More details at: Spring Boot Refresh Token with JWT example : https://www.bezkoder.com/spring-boot-refresh-token-jwt/
 
 ### Spring Boot Architecture with Spring Security :
-![img_4.png](img_4.png)
+![img_4.png](src/main/resources/DataFile/img_4.png)
 
 ### Spring Security :
 #### – WebSecurityConfigurerAdapter is the crux of our security implementation.
@@ -74,7 +74,9 @@
 #### ● `AuthTokenFilter` extends `OncePerRequestFilter`
 #### ● `JwtUtils` provides methods for `generating`, `parsing`, `validating JWT`
 
-### Run with command: mvn spring-boot:run or Run IDE, check H2 database with url: http://localhost:8080/h2-ui -> jdbc:h2:./testdb
+### Create Project and Run App:
+#### 1.Create and Set up a new project(all dependencies needed) or clone the url GitHub 2.Configure the application.properties 3.Insert the date into tables 4.Run with command: mvn spring-boot:run or Run IDE
+#### Run with command: mvn spring-boot:run or Run IDE, check H2 database with url: http://localhost:8080/h2-ui -> jdbc:h2:./testdb
 
 #### Exécuter sur la console de h2 pour la première fois : 
 #### INSERT INTO roles(name) VALUES('ROLE_USER');
@@ -99,6 +101,8 @@
 ####            3 admin@uyghurjava.com  $2a$10$1KZATjOD63z2LriZVSFhy.JIwRWQvmidjZUDUx8Hh49N/zIcWP/ha   adminUyghur
 
 ### Collection: all requests (in Postman folder)
+
+### Other reference: Screencast photos in DataFile folder
 
 ### Note* :  Sources of all codes, texts and the images from the website: 
 #### https://www.bezkoder.com/spring-boot-security-login-jwt/?utm_medium=email&utm_content=nov-18-has-completed-mentoring-session-student&bsft_clkid=e319be25-4224-4a3f-b571-4594c6874033&bsft_uid=0d13ca58-eac7-434d-969f-26fd9411a1f7&bsft_mid=4ee0c612-daa1-4d2c-baf5-17580ac81c5a&bsft_eid=7244055d-47f0-a6f2-c394-7a20ebb3a726&bsft_txnid=2b33a31b-39c2-4770-8715-191f82037424&bsft_mime_type=html&bsft_ek=2022-06-17T14%3A34%3A44Z&bsft_aaid=a265d396-7432-4eb2-9c9a-ba5eea75629e&bsft_tv=10
